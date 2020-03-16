@@ -9,6 +9,8 @@ using WPF_OrderMakingApp.Data;
 using WPF_OrderMakingApp.Model;
 using WPF_OrderMakingApp.Utilities;
 using WPF_OrderMakingApp.ViewModel;
+using WPF_OrderMakingApp.View;
+
 namespace WPF_OrderMakingApp
 {
     /// <summary>
@@ -16,22 +18,28 @@ namespace WPF_OrderMakingApp
     /// </summary>
     public partial class App : Application
     {
+        public DialogService DialogService_ = new DialogService();
+        public Container IoCContainer = new Container();
+        public App()
+        {
+            DialogService_.RegisterType<MainWindowViewModel, MainWindow>();
+            DialogService_.RegisterType<OKDialogViewModel, OKDialog>();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             MainWindow mainWindow = new MainWindow();
 
-            var container = new Container();
+            IoCContainer.Register<IMainWindowVM, MainWindowViewModel>();
+            IoCContainer.Register<IModel, Kitchen>();
+            IoCContainer.Register<IDataLayer, DataLayer>();
+            IoCContainer.Register<ISerialize, JsonSerializer>();
+            IoCContainer.Register<IDeserialize, JsonSerializer>();
+            IoCContainer.Register<ISerializer, JsonSerializer>();
 
-            container.Register<IMainWindowVM, MainWindowViewModel>();
-            container.Register<IModel, Kitchen>();
-            container.Register<IDataLayer, DataLayer>();
-            container.Register<ISerialize, JsonSerializer>();
-            container.Register<IDeserialize, JsonSerializer>();
-            container.Register<ISerializer, JsonSerializer>();
-
-            IMainWindowVM mainWindowVM = container.Create<IMainWindowVM>();
+            IMainWindowVM mainWindowVM = IoCContainer.Create<IMainWindowVM>();
             mainWindow.DataContext = mainWindowVM;
 
             mainWindow.Show();

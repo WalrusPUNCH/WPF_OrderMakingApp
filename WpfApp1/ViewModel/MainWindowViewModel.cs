@@ -38,7 +38,7 @@ namespace WPF_OrderMakingApp.ViewModel
 
         public ICommand MakeOrderCommand { get; private set; }
 
-        public ICommand AlertCommand { get; private set; }
+        public ICommand ShowOKDialogCommand { get; private set; }
 
 
         public MainWindowViewModel(IModel model)
@@ -49,14 +49,14 @@ namespace WPF_OrderMakingApp.ViewModel
 
             AddDishToOrderCommand = new Command(_ => AddDishToOrder());
             MakeOrderCommand = new Command(_ => VM_MakeOrder());
-            AlertCommand = new Command(_ => MakeAlert());
-
+            //ShowOKDialogCommand = new Command(_ => ShowOKDialog());
         }
 
         private void Model_OrderConfirmed(object sender, Utilities.OrderEventArgs e)
         {
             string response = FormResponse(e.ConfirmedOrder);
-            MessageBox.Show(response);
+            ShowOKDialog("Ваше замовлення", response);
+            //MessageBox.Show(response);
         }
         private string FormResponse(Order order)
         {
@@ -84,8 +84,11 @@ namespace WPF_OrderMakingApp.ViewModel
             ClearOrderedDishes();
         }
 
-        private void MakeAlert()
+        private void ShowOKDialog(string title, string message)
         {
+            var dialogService = (Application.Current as App).DialogService_;
+            var otherWindowViewModel = new OKDialogViewModel(title, message);
+            dialogService.CreateWindow(otherWindowViewModel).ShowDialog();
 
         }
 

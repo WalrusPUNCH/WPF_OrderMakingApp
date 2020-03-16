@@ -15,7 +15,7 @@ namespace WPF_OrderMakingApp.ViewModel
         ObservableCollection<Dish> Menu { get; }
         ICommand AddDishToOrderCommand { get; }
         ICommand MakeOrderCommand { get; }
-        ICommand AlertCommand { get; }
+        ICommand ShowOKDialogCommand { get; }
 
     }
 }
