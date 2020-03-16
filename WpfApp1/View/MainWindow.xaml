@@ -1,0 +1,44 @@
+﻿<Window x:Class="WPF_OrderMakingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_OrderMakingApp"
+        xmlns:viewmodel="clr-namespace:WPF_OrderMakingApp.ViewModel"
+        mc:Ignorable="d"
+        Title="OrderMakingApp" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80*"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+        
+        <DataGrid Name="MenuGrid" HorizontalAlignment="Stretch" Margin="7" VerticalAlignment="Stretch" Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding Menu}" SelectedItem="{Binding ChosenDish}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Страва" IsReadOnly="True" Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn Header="Кухня" IsReadOnly="True" Binding="{Binding Path=Cuisine}"/>
+                <DataGridTextColumn Header="Час приготування" IsReadOnly="True" Binding="{Binding Path=CookingTime}"/>
+                <DataGridTextColumn Header="Вага" IsReadOnly="True" Binding="{Binding Path=WeightInGrams}"/>
+                <DataGridTemplateColumn Header="Замовити">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding Path=IsOrdered, UpdateSourceTrigger=PropertyChanged}"   
+                                       Command="{Binding Path=DataContext.AddDishToOrderCommand,
+                                                                                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                            </CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <Button Name="MakeOrderButton" Content="Замовити" Padding="20 15 20 15"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Command="{Binding MakeOrderCommand}"/>
+   
+    </Grid>
+</Window>

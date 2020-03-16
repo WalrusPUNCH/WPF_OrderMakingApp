@@ -9,9 +9,9 @@ using System.IO;
 using Newtonsoft.Json.Converters;
 
 
-namespace OrderMakingApp
+namespace WPF_OrderMakingApp
 {
-    class JsonSerializer : ISerialize, IDeserialize
+    class JsonSerializer : ISerializer
     {
         Newtonsoft.Json.JsonSerializer serializer = new Newtonsoft.Json.JsonSerializer();
 

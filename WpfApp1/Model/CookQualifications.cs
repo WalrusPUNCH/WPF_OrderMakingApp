@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 
-namespace OrderMakingApp
+namespace WPF_OrderMakingApp.Model
 {
     public enum Qualification
     {

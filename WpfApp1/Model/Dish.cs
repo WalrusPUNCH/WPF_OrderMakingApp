@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace OrderMakingApp
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace WPF_OrderMakingApp.Model
 {
-    public class Dish
+    public class Dish : INotifyPropertyChanged
     {
         public string Name { get; private set; }
         [JsonProperty]
@@ -16,19 +19,16 @@ namespace OrderMakingApp
         [JsonProperty]
         public float WeightInGrams { get; private set; }
         public List<Ingridient> Ingridients { get; private set; }
-
-        private DateTime cookedAt = DateTime.MinValue;
-        public DateTime CookedAt
+        private bool isOrdered = false;
+        public bool IsOrdered
         {
-            get => cookedAt;
-
+            get => isOrdered;
             set
             {
-                if (value > DateTime.Now)
-                    cookedAt = value;
+                isOrdered = value;
+                OnPropertyChanged();
             }
         }
-
         public Dish(string name, Specialization spec, TimeSpan cookingTime, float weight, List<Ingridient> ingridients)
         {
             Name = name;
@@ -38,5 +38,10 @@ namespace OrderMakingApp
             Ingridients = ingridients;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName]string property = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
     }
 }

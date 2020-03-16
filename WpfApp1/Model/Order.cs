@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF_OrderMakingApp.Utilities;
 
-namespace OrderMakingApp
+namespace WPF_OrderMakingApp.Model
 {
     public class Order
     {
-        public readonly List<Dish> OrderedDishes = new List<Dish>();
+        public readonly IEnumerable<DishInfo> OrderedDishes = new List<DishInfo>();
         public readonly DateTime ServingTime;
         public readonly float Weight = 0;
 
-        public Order(List<Dish> dishes, DateTime time)
+        public Order(IEnumerable<DishInfo> dishes, DateTime time)
         {
             OrderedDishes = dishes;
             ServingTime = time; 
-            foreach (Dish dish in dishes)
-                Weight += dish.WeightInGrams;
+            foreach (DishInfo dish in dishes)
+                Weight += dish.Dish_.WeightInGrams;
         }
 
     }

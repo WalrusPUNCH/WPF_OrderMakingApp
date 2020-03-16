@@ -1,18 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using WPF_OrderMakingApp.Utilities;
+using WPF_OrderMakingApp.Data;
 
-namespace OrderMakingApp
+namespace WPF_OrderMakingApp.Model
 {
-    public class Kitchen : IModel
+    public class Kitchen : IModel, INotifyPropertyChanged
     {
         public event EventHandler<OrderEventArgs> OrderConfirmed = delegate { };
         private readonly IDataLayer dataAccess;
         List<Cook> Cooks = new List<Cook>();
-        private List<Dish> Menu { get; set; } = new List<Dish>();
+        private List<Dish> menu = new List<Dish>();
+        public List<Dish> Menu
+        {
+            get => menu;
+            private set
+            {
+                menu = value;
+                OnPropertyChanged();
+            }
+        }
         public Kitchen(IDataLayer data)
         {
             dataAccess = data;
@@ -24,11 +34,17 @@ namespace OrderMakingApp
            // Menu = @base.GetMenu();
         }
 
-        public void ConfirmOrder(List<string> DishNamesToCook)
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName]string property = "")
         {
-            List<Dish> DishesToCook = ConvertNamesToRealDishes(DishNamesToCook);
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
 
+        public void ConfirmOrder(IEnumerable<Dish> DishesToCook)
+        {
             DateTime ServingTime = DateTime.Now;
+            List<DishInfo> InfoAboutOrderedDishes = new List<DishInfo>();
             foreach (Dish dish in DishesToCook)
             {
                 List<Cook> AvaliableCooks = Cooks.Where(cook => cook.Specialization_ == dish.Cuisine).ToList();
@@ -36,24 +52,17 @@ namespace OrderMakingApp
                // AvaliableCooks = AvaliableCooks.OrderBy(cook => cook.EndOfWorkTime).ThenByDescending(cook => (int)((Qualification)Enum.Parse(typeof(Qualification), cook.Qualification_.ToString()))).ToList();
                 try
                 {
-                    DateTime DishReadyTime = AvaliableCooks.First().CookDish(dish);
-                    if (DishReadyTime > ServingTime)
-                        ServingTime = DishReadyTime;
+                    DishInfo InfoAboutDish = AvaliableCooks.First().CookDish(dish);
+                    if (InfoAboutDish.CookedAt > ServingTime)
+                        ServingTime = InfoAboutDish.CookedAt;
+                    InfoAboutOrderedDishes.Add(InfoAboutDish);
                 }
                 catch (NullReferenceException)
                 {
-                    OrderConfirmed(this, new OrderEventArgs(new Order(DishesToCook, DateTime.MinValue)));
+                    OrderConfirmed(this, new OrderEventArgs(new Order(InfoAboutOrderedDishes, DateTime.MinValue)));
                 }
             }
-            OrderConfirmed(this, new OrderEventArgs(new Order(DishesToCook, ServingTime)));
-        }
-
-        private List<Dish> ConvertNamesToRealDishes(List<string> DishNames)
-        {
-            List<Dish> dishes = new List<Dish>();
-            foreach (string dishName in DishNames)
-                dishes.Add(Menu.Where(dish => dish.Name == dishName).First());
-            return dishes;
+            OrderConfirmed(this, new OrderEventArgs(new Order(InfoAboutOrderedDishes, ServingTime)));
         }
 
         public List<Dish> GetMenu()

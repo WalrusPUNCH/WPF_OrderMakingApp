@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF_OrderMakingApp.Model;
 
-namespace OrderMakingApp
+namespace WPF_OrderMakingApp.Utilities
 {
     public class OrderEventArgs : EventArgs
     {

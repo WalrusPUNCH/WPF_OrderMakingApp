@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace OrderMakingApp
+namespace WPF_OrderMakingApp.Model
 {
     public class Cook : IComparable
     {
@@ -20,7 +20,7 @@ namespace OrderMakingApp
         public DateTime EndOfWorkTime { get; private set; } = DateTime.Now;
 
         [JsonPropertyAttribute]
-        public List<Dish> Queue { get; private set; } = new List<Dish>();
+        public List<DishInfo> Queue { get; private set; } = new List<DishInfo>();
         public Cook(Qualification qualification, Specialization spec)
         {
             Qualification_ = qualification;
@@ -36,7 +36,7 @@ namespace OrderMakingApp
                 return false;
         }
 
-        public DateTime CookDish(Dish dish)
+        public DishInfo CookDish(Dish dish)
         {
             if (CanCookDish(dish))
             {
@@ -47,9 +47,10 @@ namespace OrderMakingApp
                     EndOfWorkTime = DateTime.Now + CookingTimeWithBonus;
                 else
                     EndOfWorkTime += CookingTimeWithBonus;
-                dish.CookedAt = EndOfWorkTime;
-                Queue.Add(dish);
-                return EndOfWorkTime;
+                DishInfo dishToCook = new DishInfo(dish, EndOfWorkTime);
+               // dish.CookedAt = EndOfWorkTime;
+                Queue.Add(dishToCook);
+                return dishToCook;
             }
             else
                 throw new Exception("Cook doesn't have specialization for this dish");

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderMakingApp
+namespace WPF_OrderMakingApp
 {
     public interface ISerialize
     {
@@ -14,5 +14,10 @@ namespace OrderMakingApp
     public interface IDeserialize
     {
         IEnumerable<T> Deserialize<T>(string path);
+    }
+
+    public interface ISerializer : ISerialize, IDeserialize
+    {
+
     }
 }
