@@ -44,7 +44,6 @@ namespace WPF_OrderMakingApp.Model
         public void ConfirmOrder(IEnumerable<Dish> DishesToCook)
         {
             DateTime ServingTime = DateTime.Now;
-            List<DishInfo> InfoAboutOrderedDishes = new List<DishInfo>();
             foreach (Dish dish in DishesToCook)
             {
                 List<Cook> AvaliableCooks = Cooks.Where(cook => cook.Specialization_ == dish.Cuisine).ToList();
@@ -52,17 +51,17 @@ namespace WPF_OrderMakingApp.Model
                // AvaliableCooks = AvaliableCooks.OrderBy(cook => cook.EndOfWorkTime).ThenByDescending(cook => (int)((Qualification)Enum.Parse(typeof(Qualification), cook.Qualification_.ToString()))).ToList();
                 try
                 {
-                    DishInfo InfoAboutDish = AvaliableCooks.First().CookDish(dish);
-                    if (InfoAboutDish.CookedAt > ServingTime)
-                        ServingTime = InfoAboutDish.CookedAt;
-                    InfoAboutOrderedDishes.Add(InfoAboutDish);
+                    DateTime cookTime = AvaliableCooks.First().CookDish(dish);
+                    dish.CookedAt = cookTime;
+                    if (dish.CookedAt > ServingTime)
+                        ServingTime = dish.CookedAt;
                 }
                 catch (NullReferenceException)
                 {
-                    OrderConfirmed(this, new OrderEventArgs(new Order(InfoAboutOrderedDishes, DateTime.MinValue)));
+                    OrderConfirmed(this, new OrderEventArgs(new Order(DishesToCook, DateTime.MinValue)));
                 }
             }
-            OrderConfirmed(this, new OrderEventArgs(new Order(InfoAboutOrderedDishes, ServingTime)));
+            OrderConfirmed(this, new OrderEventArgs(new Order(DishesToCook, ServingTime)));
         }
 
         public List<Dish> GetMenu()

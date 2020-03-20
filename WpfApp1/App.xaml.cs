@@ -34,6 +34,7 @@ namespace WPF_OrderMakingApp
 
             IoCContainer.Register<IMainWindowVM, MainWindowViewModel>();
             IoCContainer.Register<IModel, Kitchen>();
+            IoCContainer.Register<IMVMConverter, ModelViewModelConverter>();
             IoCContainer.Register<IDataLayer, DataLayer>();
             IoCContainer.Register<ISerialize, JsonSerializer>();
             IoCContainer.Register<IDeserialize, JsonSerializer>();

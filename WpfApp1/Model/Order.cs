@@ -9,16 +9,16 @@ namespace WPF_OrderMakingApp.Model
 {
     public class Order
     {
-        public readonly IEnumerable<DishInfo> OrderedDishes = new List<DishInfo>();
+        public readonly IEnumerable<Dish> OrderedDishes = new List<Dish>();
         public readonly DateTime ServingTime;
         public readonly float Weight = 0;
 
-        public Order(IEnumerable<DishInfo> dishes, DateTime time)
+        public Order(IEnumerable<Dish> dishes, DateTime time)
         {
             OrderedDishes = dishes;
             ServingTime = time; 
-            foreach (DishInfo dish in dishes)
-                Weight += dish.Dish_.WeightInGrams;
+            foreach (Dish dish in dishes)
+                Weight += dish.WeightInGrams;
         }
 
     }

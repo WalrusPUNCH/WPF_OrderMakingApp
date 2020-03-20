@@ -19,16 +19,19 @@ namespace WPF_OrderMakingApp.Model
         [JsonProperty]
         public float WeightInGrams { get; private set; }
         public List<Ingridient> Ingridients { get; private set; }
-        private bool isOrdered = false;
-        public bool IsOrdered
+
+        private DateTime cookedAt = DateTime.MinValue;
+        public DateTime CookedAt
         {
-            get => isOrdered;
+            get => cookedAt;
+
             set
             {
-                isOrdered = value;
-                OnPropertyChanged();
+                if (value > DateTime.Now)
+                    cookedAt = value;
             }
         }
+
         public Dish(string name, Specialization spec, TimeSpan cookingTime, float weight, List<Ingridient> ingridients)
         {
             Name = name;

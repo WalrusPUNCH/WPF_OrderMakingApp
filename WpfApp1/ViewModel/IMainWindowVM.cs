@@ -12,7 +12,7 @@ namespace WPF_OrderMakingApp.ViewModel
 {
     public interface IMainWindowVM : INotifyPropertyChanged
     {
-        ObservableCollection<Dish> Menu { get; }
+        ObservableCollection<DishViewModel> Menu { get; }
         ICommand AddDishToOrderCommand { get; }
         ICommand MakeOrderCommand { get; }
         ICommand ShowOKDialogCommand { get; }

@@ -8,21 +8,24 @@ using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WPF_OrderMakingApp.Model;
+using WPF_OrderMakingApp.Utilities;
 
 namespace WPF_OrderMakingApp.ViewModel
 {
     public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowVM
     {
+        private readonly IMVMConverter MVMConverter;
+
         private readonly IModel Model;     
 
-        private ObservableCollection<Dish> menu;
-        public ObservableCollection<Dish> Menu
+        private ObservableCollection<DishViewModel> menu;
+        public ObservableCollection<DishViewModel> Menu
         {
             get => menu;
         }
 
-        private Dish chosenDish;
-        public Dish ChosenDish
+        private DishViewModel chosenDish;
+        public DishViewModel ChosenDish
         {
             get => chosenDish;
             set
@@ -32,7 +35,7 @@ namespace WPF_OrderMakingApp.ViewModel
             }
         }
 
-        private ObservableCollection<Dish> dishesForNextOrder = new ObservableCollection<Dish>();
+        private ObservableCollection<DishViewModel> dishesForNextOrder = new ObservableCollection<DishViewModel>();
 
         public ICommand AddDishToOrderCommand { get; private set; }
 
@@ -44,8 +47,11 @@ namespace WPF_OrderMakingApp.ViewModel
         public MainWindowViewModel(IModel model)
         {
             Model = model;
+            MVMConverter = new ModelViewModelConverter(Model.GetMenu());
+
             Model.OrderConfirmed += Model_OrderConfirmed;
-            menu = new ObservableCollection<Dish>(Model.GetMenu());
+            menu = new ObservableCollection<DishViewModel>(MVMConverter.ConvertModelToViewModel(Model.GetMenu()));
+           // menu = new ObservableCollection<DishViewModel>(ConvertModelToViewModel(Model.GetMenu()));
 
             AddDishToOrderCommand = new Command(_ => AddDishToOrder());
             MakeOrderCommand = new Command(_ => VM_MakeOrder());
@@ -58,18 +64,19 @@ namespace WPF_OrderMakingApp.ViewModel
             ShowOKDialog("Ваше замовлення", response);
             //MessageBox.Show(response);
         }
+
         private string FormResponse(Order order)
         {
             string response = String.Format("Ваше замовлення буде готове о {0}\n", order.ServingTime.ToShortTimeString());
-            foreach (DishInfo dish in order.OrderedDishes)
-                response += String.Format("Страва {0} буде готова о {1} \n", dish.Dish_.Name, dish.CookedAt.ToShortTimeString());
+            foreach (Dish dish in order.OrderedDishes)
+                response += String.Format("Страва {0} буде готова о {1} \n", dish.Name, dish.CookedAt.ToShortTimeString());
             return response;
         }
 
         private void ClearOrderedDishes()
         {
             dishesForNextOrder.Clear();
-            foreach (Dish dish in Menu)
+            foreach (DishViewModel dish in Menu)
                 dish.IsOrdered = false;
         }
 
@@ -80,7 +87,7 @@ namespace WPF_OrderMakingApp.ViewModel
 
         private void VM_MakeOrder()
         {
-            Model.ConfirmOrder(dishesForNextOrder);
+            Model.ConfirmOrder(MVMConverter.ConvertViewModelToModel(dishesForNextOrder));
             ClearOrderedDishes();
         }
 

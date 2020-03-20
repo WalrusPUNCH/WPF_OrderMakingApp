@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPF_OrderMakingApp.Model
 {
+    /*
     public class DishInfo
     {
         public Dish Dish_ { get; set; }
@@ -27,5 +28,5 @@ namespace WPF_OrderMakingApp.Model
             this.Dish_ = dish;
             cookedAt = time;
         }
-    }
+    }*/
 }

@@ -121,8 +121,11 @@
     </ApplicationDefinition>
     <Compile Include="Utilities\DialogService.cs" />
     <Compile Include="Utilities\Container.cs" />
+    <Compile Include="Utilities\IMVMConverter.cs" />
+    <Compile Include="Utilities\ModelToViewModelConverter.cs" />
     <Compile Include="Utilities\OrderedDishesEventArgs.cs" />
     <Compile Include="Utilities\OrderEventArgs.cs" />
+    <Compile Include="ViewModel\DishViewModel.cs" />
     <Compile Include="ViewModel\OKDialogViewModel.cs" />
     <Compile Include="View\OKDialog.xaml.cs">
       <DependentUpon>OKDialog.xaml</DependentUpon>
@@ -192,8 +195,6 @@
     <Resource Include="DataSources\CooksInformtaion.txt" />
     <Resource Include="DataSources\MenuInformtaion.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

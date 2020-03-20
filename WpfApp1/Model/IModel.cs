@@ -10,7 +10,7 @@ namespace WPF_OrderMakingApp.Model
     public interface IModel
     {
         event EventHandler<OrderEventArgs> OrderConfirmed;
-        void ConfirmOrder(IEnumerable<Dish> dishes);
+        void ConfirmOrder(IEnumerable<Dish> dishNames);
         List<Dish> GetMenu();
     }
 }

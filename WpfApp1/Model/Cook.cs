@@ -20,7 +20,7 @@ namespace WPF_OrderMakingApp.Model
         public DateTime EndOfWorkTime { get; private set; } = DateTime.Now;
 
         [JsonPropertyAttribute]
-        public List<DishInfo> Queue { get; private set; } = new List<DishInfo>();
+        public List<Dish> Queue { get; private set; } = new List<Dish>();
         public Cook(Qualification qualification, Specialization spec)
         {
             Qualification_ = qualification;
@@ -36,7 +36,7 @@ namespace WPF_OrderMakingApp.Model
                 return false;
         }
 
-        public DishInfo CookDish(Dish dish)
+        public DateTime CookDish(Dish dish)
         {
             if (CanCookDish(dish))
             {
@@ -47,10 +47,9 @@ namespace WPF_OrderMakingApp.Model
                     EndOfWorkTime = DateTime.Now + CookingTimeWithBonus;
                 else
                     EndOfWorkTime += CookingTimeWithBonus;
-                DishInfo dishToCook = new DishInfo(dish, EndOfWorkTime);
                // dish.CookedAt = EndOfWorkTime;
-                Queue.Add(dishToCook);
-                return dishToCook;
+                Queue.Add(dish);
+                return EndOfWorkTime;
             }
             else
                 throw new Exception("Cook doesn't have specialization for this dish");
