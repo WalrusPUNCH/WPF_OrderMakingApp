@@ -19,6 +19,8 @@ namespace WPF_OrderMakingApp.Utilities
 
         public IEnumerable<Dish> ConvertViewModelToModel(IEnumerable<DishViewModel> dishViewModels)
         {
+            if (dishViewModels == null)
+                return null;
             IEnumerable<Dish> dishes = new List<Dish>();
             foreach (DishViewModel dishVM in dishViewModels)
                 dishes = dishes.Append(Menu.Where(dish => dish.Name == dishVM.Name).First());
@@ -27,6 +29,8 @@ namespace WPF_OrderMakingApp.Utilities
 
         public IEnumerable<DishViewModel> ConvertModelToViewModel(IEnumerable<Dish> dishes)
         {
+            if (dishes == null)
+                return null;
             IEnumerable<DishViewModel> dishVMs = new List<DishViewModel>();
             foreach (Dish dish in dishes)
                 dishVMs = dishVMs.Append(new DishViewModel(dish.Name, dish.Cuisine.ToString(), dish.CookingTime, dish.WeightInGrams));

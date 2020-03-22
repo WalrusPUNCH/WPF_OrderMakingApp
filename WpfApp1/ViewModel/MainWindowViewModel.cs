@@ -12,7 +12,7 @@ using WPF_OrderMakingApp.Utilities;
 
 namespace WPF_OrderMakingApp.ViewModel
 {
-    public class MainWindowViewModel : INotifyPropertyChanged, IMainWindowVM
+    public class MainWindowViewModel : IMainWindowVM
     {
         private readonly IMVMConverter MVMConverter;
 
@@ -53,15 +53,17 @@ namespace WPF_OrderMakingApp.ViewModel
             menu = new ObservableCollection<DishViewModel>(MVMConverter.ConvertModelToViewModel(Model.GetMenu()));
            // menu = new ObservableCollection<DishViewModel>(ConvertModelToViewModel(Model.GetMenu()));
 
-            AddDishToOrderCommand = new Command(_ => AddDishToOrder());
+            AddDishToOrderCommand = new Command(AddDishToOrder);
             MakeOrderCommand = new Command(_ => VM_MakeOrder());
-            //ShowOKDialogCommand = new Command(_ => ShowOKDialog());
+            ShowOKDialogCommand = new Command(ShowOKDialog);
         }
 
         private void Model_OrderConfirmed(object sender, Utilities.OrderEventArgs e)
         {
             string response = FormResponse(e.ConfirmedOrder);
-            ShowOKDialog("Ваше замовлення", response);
+            ShowOKDialogCommand.Execute(new { Title = "Ваше замовлення", Message = response });
+           // ShowOKDialog("Ваше замовлення", response);
+
             //MessageBox.Show(response);
         }
 
@@ -80,9 +82,11 @@ namespace WPF_OrderMakingApp.ViewModel
                 dish.IsOrdered = false;
         }
 
-        private void AddDishToOrder()
+        private void AddDishToOrder(object dish)
         {
-            dishesForNextOrder.Add(chosenDish);
+            DishViewModel newDish = dish as DishViewModel;
+            if (newDish != null)
+                dishesForNextOrder.Add(newDish);
         }
 
         private void VM_MakeOrder()
@@ -91,10 +95,10 @@ namespace WPF_OrderMakingApp.ViewModel
             ClearOrderedDishes();
         }
 
-        private void ShowOKDialog(string title, string message)
+        private void ShowOKDialog(dynamic info)
         {
             var dialogService = (Application.Current as App).DialogService_;
-            var otherWindowViewModel = new OKDialogViewModel(title, message);
+            var otherWindowViewModel = new OKDialogViewModel(info.Title, info.Message);
             dialogService.CreateWindow(otherWindowViewModel).ShowDialog();
 
         }

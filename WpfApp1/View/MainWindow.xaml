@@ -30,7 +30,8 @@
                         <DataTemplate>
                             <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding Path=IsOrdered, UpdateSourceTrigger=PropertyChanged}"   
                                        Command="{Binding Path=DataContext.AddDishToOrderCommand,
-                                                                                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                                                                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                       CommandParameter="{Binding Path=DataContext.ChosenDish, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
                             </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 namespace WPF_OrderMakingApp.Model
 {
-    public class Dish : INotifyPropertyChanged
+    public class Dish
     {
         public string Name { get; private set; }
         [JsonProperty]
@@ -41,10 +41,5 @@ namespace WPF_OrderMakingApp.Model
             Ingridients = ingridients;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string property = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
     }
 }
