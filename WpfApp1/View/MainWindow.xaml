@@ -13,12 +13,15 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="X" Modifiers="Shift" Command="{Binding OpenAdminPanelCommand}"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80*"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        
+
         <DataGrid Name="MenuGrid" HorizontalAlignment="Stretch" Margin="7" VerticalAlignment="Stretch" Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding Menu}" SelectedItem="{Binding ChosenDish}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Страва" IsReadOnly="True" Binding="{Binding Path=Name}"/>
@@ -31,15 +34,14 @@
                             <CheckBox  HorizontalAlignment="Center" IsChecked="{Binding Path=IsOrdered, UpdateSourceTrigger=PropertyChanged}"   
                                        Command="{Binding Path=DataContext.AddDishToOrderCommand,
                                                                                 RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                                       CommandParameter="{Binding Path=DataContext.ChosenDish, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                       CommandParameter="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}">
                             </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        
+
         <Button Name="MakeOrderButton" Content="Замовити" Padding="20 15 20 15"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Command="{Binding MakeOrderCommand}"/>
-   
     </Grid>
 </Window>

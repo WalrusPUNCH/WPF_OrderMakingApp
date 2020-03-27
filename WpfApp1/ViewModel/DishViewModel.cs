@@ -7,14 +7,44 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+using WPF_OrderMakingApp.Model;
+
 namespace WPF_OrderMakingApp.ViewModel
 {
     public class DishViewModel : INotifyPropertyChanged
-    {
-        public string Name { get; }
-        public string Cuisine { get; }
-        public TimeSpan CookingTime { get; }
-        public float WeightInGrams { get; }
+    {       
+        private Dish Dish_ = null;
+
+        public int ID
+        {
+            get => Dish_.ID;
+        }
+        public string Name
+        {
+            get => Dish_.Name;
+            set { Dish_.Name = value; OnPropertyChanged(); }
+        }
+        public Specialization Cuisine
+        {
+            get => Dish_.Cuisine;
+            set { Dish_.Cuisine = value; OnPropertyChanged(); }
+        }
+        public TimeSpan CookingTime
+        {
+            get => Dish_.CookingTime;
+            set { Dish_.CookingTime = value; OnPropertyChanged(); }
+        }
+        public float WeightInGrams
+        {
+            get => Dish_.WeightInGrams;
+            set
+            {
+                if (value > 0)
+                {
+                    Dish_.WeightInGrams = value; OnPropertyChanged();
+                }
+            }
+        }
 
         private bool isOrdered = false;
         public bool IsOrdered
@@ -27,18 +57,24 @@ namespace WPF_OrderMakingApp.ViewModel
             }
         }
 
+        
+
+        public DishViewModel(Dish dish)
+        {
+            Dish_ = dish;
+            Dish_.PropertyChanged += new PropertyChangedEventHandler(Dish_PropertyChanged);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-        public DishViewModel(string name, string spec, TimeSpan cookingTime, float weight)
+        void Dish_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Name = name;
-            Cuisine = spec;
-            CookingTime = cookingTime;
-            WeightInGrams = weight;
+            this.OnPropertyChanged();
         }
+        
     }
 }

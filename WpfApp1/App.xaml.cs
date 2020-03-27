@@ -22,8 +22,7 @@ namespace WPF_OrderMakingApp
         public Container IoCContainer = new Container();
         public App()
         {
-            DialogService_.RegisterType<MainWindowViewModel, MainWindow>();
-            DialogService_.RegisterType<OKDialogViewModel, OKDialog>();
+            ConfigureDialogService();   
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -32,18 +31,32 @@ namespace WPF_OrderMakingApp
 
             MainWindow mainWindow = new MainWindow();
 
-            IoCContainer.Register<IMainWindowVM, MainWindowViewModel>();
-            IoCContainer.Register<IModel, Kitchen>();
-            IoCContainer.Register<IMVMConverter, ModelViewModelConverter>();
-            IoCContainer.Register<IDataLayer, DataLayer>();
-            IoCContainer.Register<ISerialize, JsonSerializer>();
-            IoCContainer.Register<IDeserialize, JsonSerializer>();
-            IoCContainer.Register<ISerializer, JsonSerializer>();
+            ConfigureIoCContainer();
 
             IMainWindowVM mainWindowVM = IoCContainer.Create<IMainWindowVM>();
             mainWindow.DataContext = mainWindowVM;
 
             mainWindow.Show();
+        }
+
+        private void ConfigureDialogService()
+        {
+            DialogService_.RegisterType<MainWindowViewModel, MainWindow>();
+            DialogService_.RegisterType<OKDialogViewModel, OKDialog>();
+            DialogService_.RegisterType<AdminViewModel, AdminView>();
+        }
+
+
+        private void ConfigureIoCContainer()
+        {
+            IoCContainer.Register<IMainWindowVM, MainWindowViewModel>();
+            IoCContainer.Register<IModel, Kitchen>();
+            //IoCContainer.Register<IMVMConverter, ModelViewModelConverter>();
+            IoCContainer.Register<IMVMMapper, MVMMapper>();
+            IoCContainer.Register<IDataLayer, DataLayer>();
+            IoCContainer.Register<ISerialize, JsonSerializer>();
+            IoCContainer.Register<IDeserialize, JsonSerializer>();
+            IoCContainer.Register<ISerializer, JsonSerializer>();
         }
     }
 }

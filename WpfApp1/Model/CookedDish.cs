@@ -5,28 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WPF_OrderMakingApp.Model
-{
-    /*
-    public class DishInfo
+{ 
+    public class CookedDish
     {
-        public Dish Dish_ { get; set; }
+        public Dish Information { get; private set; }
 
         private DateTime cookedAt = DateTime.MinValue;
         public DateTime CookedAt
         {
             get => cookedAt;
 
-            set
+            private set
             {
                 if (value > DateTime.Now)
                     cookedAt = value;
             }
         }
 
-        public DishInfo(Dish dish, DateTime time)
+        public CookedDish(Dish dish, DateTime time)
         {
-            this.Dish_ = dish;
+            Information = dish;
             cookedAt = time;
         }
-    }*/
+    }
 }

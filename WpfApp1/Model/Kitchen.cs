@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 using WPF_OrderMakingApp.Utilities;
 using WPF_OrderMakingApp.Data;
 
+using Data_Layer;
+
 namespace WPF_OrderMakingApp.Model
 {
-    public class Kitchen : IModel, INotifyPropertyChanged
+    public class Kitchen : IModel, INotifyPropertyChanged, IChangeable
     {
         public event EventHandler<OrderEventArgs> OrderConfirmed = delegate { };
         private readonly IDataLayer dataAccess;
         List<Cook> Cooks = new List<Cook>();
+        private List<Data_Layer.Entities.DishEntity> list = new List<Data_Layer.Entities.DishEntity>();
         private List<Dish> menu = new List<Dish>();
         public List<Dish> Menu
         {
@@ -25,13 +29,11 @@ namespace WPF_OrderMakingApp.Model
         }
         public Kitchen(IDataLayer data)
         {
+            list = new Data_Layer.Repositories.MenuRepository(new Data_Layer.DishContext()).GetMenu().ToList();
             dataAccess = data;
 
             Menu = dataAccess.GetItems<Dish>().ToList();
             Cooks = dataAccess.GetItems<Cook>().ToList();
-
-           // Cooks = @base.GetCooks();
-           // Menu = @base.GetMenu();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -43,6 +45,7 @@ namespace WPF_OrderMakingApp.Model
 
         public void ConfirmOrder(IEnumerable<Dish> DishesToCook)
         {
+            List<CookedDish> cookedDishes = new List<CookedDish>();
             DateTime ServingTime = DateTime.Now;
             foreach (Dish dish in DishesToCook)
             {
@@ -52,16 +55,26 @@ namespace WPF_OrderMakingApp.Model
                 try
                 {
                     DateTime cookTime = AvaliableCooks.First().CookDish(dish);
-                    dish.CookedAt = cookTime;
-                    if (dish.CookedAt > ServingTime)
-                        ServingTime = dish.CookedAt;
+                    cookedDishes.Add(new CookedDish(dish, cookTime));
+                   // dish.CookedAt = cookTime;
+                    if (cookTime > ServingTime)
+                        ServingTime = cookTime;
                 }
                 catch (NullReferenceException)
                 {
-                    OrderConfirmed(this, new OrderEventArgs(new Order(DishesToCook, DateTime.MinValue)));
+                    OrderConfirmed(this, new OrderEventArgs(new Order(cookedDishes, DateTime.MinValue)));
                 }
             }
-            OrderConfirmed(this, new OrderEventArgs(new Order(DishesToCook, ServingTime)));
+            OrderConfirmed(this, new OrderEventArgs(new Order(cookedDishes, ServingTime)));
+        }
+
+        public void AddDish(Dish dish)
+        {
+            Menu.Add(dish);
+        }
+        public void RemoveDish(Dish dish)
+        {
+            Menu.Remove(dish);
         }
 
         public List<Dish> GetMenu()
