@@ -165,10 +165,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\DataLayer.cs" />
-    <Compile Include="Data\IDataLayer.cs" />
-    <Compile Include="Data\ISerializer.cs" />
-    <Compile Include="Data\JsonSerializer.cs" />
     <Compile Include="Model\CookedDish.cs" />
     <Compile Include="ViewModel\IMainWindowVM.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -217,10 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="DataSources\CooksInformtaion.txt" />
-    <Resource Include="DataSources\MenuInformtaion.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
