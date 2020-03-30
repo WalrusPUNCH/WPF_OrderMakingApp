@@ -10,6 +10,7 @@ namespace WPF_OrderMakingApp.Model
     {
         void AddDish(Dish newDish);
         void RemoveDish(Dish dish);
+        void UpdateDish(Dish dish);
     }
 
 }

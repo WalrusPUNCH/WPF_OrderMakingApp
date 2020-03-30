@@ -4,28 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
-using Newtonsoft.Json;
+
 
 namespace WPF_OrderMakingApp.Model
 {
     public class Cook : IComparable
     {
-        [JsonPropertyAttribute]
+       // public static int counter = 0;
+        //private int id;
+        public string ID { get; private set; }
+
         public Qualification Qualification_ { get; private set; }
 
-        [JsonPropertyAttribute]
         public Specialization Specialization_ { get; private set; }
 
-        [JsonPropertyAttribute]
         public DateTime EndOfWorkTime { get; private set; } = DateTime.Now;
-
-        [JsonPropertyAttribute]
         public List<Dish> Queue { get; private set; } = new List<Dish>();
-        public Cook(Qualification qualification, Specialization spec)
+        public Cook(Qualification qualification, Specialization spec) : this()
         {
             Qualification_ = qualification;
             Specialization_ = spec;
            // EndOfWorkTime = DateTime.Now;
+        }
+        public Cook()
+        {
+            ID = Guid.NewGuid().ToString();
+            //ID = counter;
+            //counter++;
         }
 
         private bool CanCookDish(Dish dish)

@@ -47,8 +47,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Expression.Blend.Sdk.WPF.1.0.1\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -110,9 +110,6 @@
     </Reference>
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Expression.Blend.Sdk.WPF.1.0.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -131,7 +128,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\CookContext.cs" />
+    <Compile Include="ADataLayer\Contexts\KitchenContext.cs" />
+    <Compile Include="ADataLayer\Entities\CookEntity.cs" />
+    <Compile Include="ADataLayer\Entities\DishEntity.cs" />
+    <Compile Include="ADataLayer\Interfaces\ICookRepository.cs" />
+    <Compile Include="ADataLayer\Interfaces\IKitchenContext.cs" />
+    <Compile Include="ADataLayer\Interfaces\IDishRepository.cs" />
+    <Compile Include="ADataLayer\Interfaces\IUnitOfWork.cs" />
+    <Compile Include="ADataLayer\Repositories\CookRepository.cs" />
+    <Compile Include="ADataLayer\UnitOfWork.cs" />
+    <Compile Include="ADataLayer\Repositories\DishRepository.cs" />
     <Compile Include="Model\IChangeable.cs" />
     <Compile Include="Utilities\DialogService.cs" />
     <Compile Include="Utilities\Container.cs" />
@@ -216,12 +222,7 @@
     <Resource Include="DataSources\CooksInformtaion.txt" />
     <Resource Include="DataSources\MenuInformtaion.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Data Layer\Data Layer.csproj">
-      <Project>{87b1ffb9-0261-46e2-8b62-4a9f0a27344b}</Project>
-      <Name>Data Layer</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

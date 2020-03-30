@@ -12,9 +12,9 @@ namespace WPF_OrderMakingApp.Model
 {
     public class Dish : INotifyPropertyChanged
     {
-        public static int counter = 0;
-
-        public readonly int ID;
+        //public static int counter = 0;
+        //private int id;
+        public string ID { get; private set; }
 
         private string name;
         public string Name
@@ -79,7 +79,7 @@ namespace WPF_OrderMakingApp.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
-        public Dish(string name, Specialization spec, TimeSpan cookingTime, float weight /*, List<Ingridient> ingridients*/) : base()
+        public Dish(string name, Specialization spec, TimeSpan cookingTime, float weight /*, List<Ingridient> ingridients*/) : this()
         {
             Name = name;
             Cuisine = spec;
@@ -89,8 +89,7 @@ namespace WPF_OrderMakingApp.Model
         }
         public Dish()
         {
-            ID = counter;
-            counter++;
+            ID = Guid.NewGuid().ToString();
         }
 
     }

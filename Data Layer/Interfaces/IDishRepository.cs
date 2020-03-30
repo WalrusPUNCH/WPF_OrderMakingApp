@@ -7,7 +7,7 @@ using Data_Layer.Entities;
 
 namespace Data_Layer.Interfaces
 {
-    interface IMenuRepository
+    interface IDishRepository
     {
         IEnumerable<DishEntity> GetMenu(); // получение всех объектов
         DishEntity GetDish(int id); // получение одного объекта по id

@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
+using WPF_OrderMakingApp.ADataLayer.Interfaces;
+using WPF_OrderMakingApp.ADataLayer.Entities;
 
-using Data_Layer.Entities;
-using Data_Layer.Interfaces;
-
-namespace Data_Layer.Repositories
+namespace WPF_OrderMakingApp.ADataLayer.Repositories
 {
-    public class MenuRepository : IMenuRepository
+    public class DishRepository : IDishRepository
     {
-        private IDishContext db;
-        public MenuRepository(IDishContext dishContext)
+        private IKitchenContext db;
+        public DishRepository(IKitchenContext dishContext)
         {
             db = dishContext;
         }
@@ -37,15 +36,16 @@ namespace Data_Layer.Repositories
             oldDish.Cuisine = dish.Cuisine;
             oldDish.Name = dish.Name;
             oldDish.WeightInGrams = dish.WeightInGrams;
-            //DishEntity OldDish = (DishEntity)(db.Entry(dish).Entity);
-            //OldDish.CookingTime = dish.CookingTime;
-
         }
-        public void DeleteDish(int id)
+        public void DeleteDish(DishEntity dish)
         {
-            DishEntity dish = db.Dishes.Find(id);
-            if (dish != null)
-                db.Dishes.Remove(dish);
+            DishEntity x = db.Dishes.Where( item => item.ID == dish.ID).FirstOrDefault();
+                db.Dishes.Remove(x);
+        }
+
+        public void SaveChanges()
+        {
+            db.SaveChanges();
         }
     }
 }

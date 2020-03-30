@@ -5,18 +5,19 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using WPF_OrderMakingApp.Utilities;
-using WPF_OrderMakingApp.Data;
+using WPF_OrderMakingApp.ADataLayer.Interfaces;
 
-using Data_Layer;
+using AutoMapper;
 
 namespace WPF_OrderMakingApp.Model
 {
-    public class Kitchen : IModel, INotifyPropertyChanged, IChangeable
+    public class Kitchen : INotifyPropertyChanged, IModel
     {
         public event EventHandler<OrderEventArgs> OrderConfirmed = delegate { };
-        private readonly IDataLayer dataAccess;
+        private readonly IUnitOfWork Data;
+        private readonly IMapper Mapper;
         List<Cook> Cooks = new List<Cook>();
-        private List<Data_Layer.Entities.DishEntity> list = new List<Data_Layer.Entities.DishEntity>();
+    
         private List<Dish> menu = new List<Dish>();
         public List<Dish> Menu
         {
@@ -27,13 +28,13 @@ namespace WPF_OrderMakingApp.Model
                 OnPropertyChanged();
             }
         }
-        public Kitchen(IDataLayer data)
+        public Kitchen(IUnitOfWork data, IMapper mapper)
         {
-            list = new Data_Layer.Repositories.MenuRepository(new Data_Layer.DishContext()).GetMenu().ToList();
-            dataAccess = data;
+            Mapper = mapper;
+            Data = data;
 
-            Menu = dataAccess.GetItems<Dish>().ToList();
-            Cooks = dataAccess.GetItems<Cook>().ToList();
+            Menu = Mapper.Map<List<Dish>>(Data.Dishes.GetMenu());
+            Cooks = Mapper.Map<List<Cook>>(Data.Cookers.GetCookers());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -71,12 +72,22 @@ namespace WPF_OrderMakingApp.Model
         public void AddDish(Dish dish)
         {
             Menu.Add(dish);
+            Data.Dishes.AddDish(Mapper.Map<ADataLayer.Entities.DishEntity>(dish));
+            Data.Save();
         }
+
         public void RemoveDish(Dish dish)
         {
             Menu.Remove(dish);
+            Data.Dishes.DeleteDish(Mapper.Map<ADataLayer.Entities.DishEntity>(dish));
+            Data.Save();
         }
 
+        public void UpdateDish(Dish dish)
+        {
+            Data.Dishes.UpdateDish(Mapper.Map<ADataLayer.Entities.DishEntity>(dish));
+            Data.Save();
+        }
         public List<Dish> GetMenu()
         {
             return Menu;

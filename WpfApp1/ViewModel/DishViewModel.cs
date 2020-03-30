@@ -15,7 +15,7 @@ namespace WPF_OrderMakingApp.ViewModel
     {       
         private Dish Dish_ = null;
 
-        public int ID
+        public string ID
         {
             get => Dish_.ID;
         }

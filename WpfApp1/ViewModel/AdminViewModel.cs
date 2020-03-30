@@ -59,8 +59,19 @@ namespace WPF_OrderMakingApp.ViewModel
                 })));
             }
         }
-        
-        
+
+        private ICommand _updateDishCommand;
+        public ICommand UpdateDishCommand
+        {
+            get
+            {
+                return _updateDishCommand ?? (_updateDishCommand = new Command(obj =>
+                {
+                    Kitchen.UpdateDish(Mapper.MapViewModelOnDish(SelectedDish));
+                }));
+            }
+        }
+
         public AdminViewModel(ObservableCollection<DishViewModel>  menu, IChangeable kitchen, IMVMMapper mapper)
         {
             Kitchen = kitchen;

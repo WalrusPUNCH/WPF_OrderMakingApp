@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:WPF_OrderMakingApp.View"
         mc:Ignorable="d"
         Title="AdminPanel" Height="450" Width="800" WindowStartupLocation="CenterScreen">
@@ -32,17 +33,17 @@
         </ListBox>
 
         <StackPanel Grid.Column="1" DataContext="{Binding SelectedDish}">
-            <TextBlock Text="Выбранный элемент" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="Обрана страва" VerticalAlignment="Center" HorizontalAlignment="Center" />
             <TextBlock Text="Страва" />
-            <TextBox Text="{Binding Path=Name}" />
+            <TextBox Text="{Binding Path=Name}"/>>
             <TextBlock Text="Кухня" />
             <TextBox Text="{Binding Path=Cuisine}"/>
             <TextBlock Text="Час готування" />
-            <TextBox Text="{Binding Path=CookingTime}" />
-            <TextBlock Text="Вага" />
-            <TextBox Text="{Binding Path=WeightInGrams}" />
+            <TextBox Text="{Binding Path=CookingTime}"/>
+            <TextBlock Text="Вага"/>
+            <TextBox Text="{Binding Path=WeightInGrams}"/>
         </StackPanel>
-       <!-- <Button Content="Confirm" Style="{StaticResource button}" Grid.Column="1" HorizontalAlignment="Left" Margin="134,282,0,0" VerticalAlignment="Top" Width="75" Command="{Binding AddNewItemCommand}"/> -->
+        <Button Content="Update" HorizontalAlignment="Left" Margin="179,31,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding UpdateDishCommand}"/>
         <Button Content="Add " HorizontalAlignment="Left" Margin="389,32,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding AddDishCommand}"  />
         <Button Content="Remove" HorizontalAlignment="Left" Margin="273,31,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Command="{Binding RemoveDishCommand}"/>
     </Grid>
