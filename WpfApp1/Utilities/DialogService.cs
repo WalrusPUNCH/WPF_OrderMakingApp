@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WPF_OrderMakingApp.Utilities
+namespace Presentation_Layer.Utilities
 {
     public class DialogService
     {

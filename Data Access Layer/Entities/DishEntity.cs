@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Data_Access_Layer.Entities
+{
+    public class DishEntity
+    {
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid ID { get; set; } = Guid.NewGuid();
+        public string Name { get; set; }
+        public TimeSpan CookingTime { get; set; }
+        public int Cuisine { get; set; }
+        public float WeightInGrams { get; set; }
+    }
+}

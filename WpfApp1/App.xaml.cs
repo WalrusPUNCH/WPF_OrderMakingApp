@@ -5,14 +5,21 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using WPF_OrderMakingApp.ADataLayer.Entities;
-using WPF_OrderMakingApp.Model;
-using WPF_OrderMakingApp.Utilities;
-using WPF_OrderMakingApp.ViewModel;
-using WPF_OrderMakingApp.View;
+
 using AutoMapper;
 
-namespace WPF_OrderMakingApp
+using Data_Access_Layer.Interfaces;
+using Data_Access_Layer.Entities;
+
+using Business_Logic_Layer.Interfaces;
+using Business_Logic_Layer.Models;
+
+using Presentation_Layer.Interfaces;
+using Presentation_Layer.Utilities;
+using Presentation_Layer.Views;
+using Presentation_Layer.ViewModels;
+
+namespace Presentation_Layer
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -51,10 +58,10 @@ namespace WPF_OrderMakingApp
         private void ConfigureIoCContainer()
         {
             IoCContainer.Register<IMainWindowVM, MainWindowViewModel>();
-            IoCContainer.Register<IModel, Kitchen>();
+            IoCContainer.Register<IModel, Business_Logic_Layer.Kitchen>();
             IoCContainer.Register<IMVMMapper, MVMMapper>();
-            IoCContainer.Register<ADataLayer.Interfaces.IUnitOfWork, ADataLayer.UnitOfWork>();
-            IoCContainer.Register<ADataLayer.Interfaces.IKitchenContext, ADataLayer.Contexts.KitchenContext>();
+            IoCContainer.Register<IUnitOfWork, Data_Access_Layer.UnitOfWork>();
+            IoCContainer.Register<IKitchenContext, Data_Access_Layer.Contexts.KitchenContext>();
       
             IoCContainer.RegisterImplementation<IMapper>(ConfigureMapper().CreateMapper());
         }
